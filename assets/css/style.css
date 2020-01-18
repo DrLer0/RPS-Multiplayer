@@ -31,5 +31,8 @@ h3 {
 .choice {
     max-width: 20px;
     max-height: 20px;
-    margin: 20%;
+}
+
+.active {
+    background-color: green;
 }
