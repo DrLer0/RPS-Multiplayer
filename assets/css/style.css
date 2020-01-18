@@ -1,0 +1,35 @@
+h1,
+h2,
+h3 {
+    font-family: "lato", sans-serif;
+    background: -webkit-linear-gradient(white, #38495a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 300;
+    /* font-size: 50px;
+    letter-spacing: 10px; */
+}
+
+.block {
+    display: block;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.box {
+    margin: 30px;
+    background-color: rgba(87, 87, 87, 0.281);
+    /* background-color: yellow; */
+}
+
+.choice {
+    max-width: 20px;
+    max-height: 20px;
+    margin: 20%;
+}
