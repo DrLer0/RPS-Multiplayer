@@ -1,6 +1,8 @@
 var roomCode;
 var player1;
 var player2;
+var choice1;
+var choice2;
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -17,8 +19,8 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
-$("#roomCodeBtn").on("click", function(event) {
-    event.preventDefault();
+
+function setUpRoom() {
     roomCode = $("#roomCode").val().trim();
     if (roomCode == "") {
         alert("room code cannot be empty")
@@ -40,18 +42,14 @@ $("#roomCodeBtn").on("click", function(event) {
             }
         });
     }
+}
+
+$("#roomCodeBtn").on("click", function(event) {
+    event.preventDefault();
+    setUpRoom();
 })
 
 $(".choice").on("click", function() {
     console.log($(this).attr("id"));
+    console.log(player1, player2);
 })
-
-
-// roomCode = "abcd"
-
-// function getRoomCode() {
-//     database.ref(roomCode).set({
-//         player1ID: "abcd1"
-//     });
-// }
-// getRoomCode();;
