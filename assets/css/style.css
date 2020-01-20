@@ -1,7 +1,8 @@
 h1,
 h2,
 h3,
-span {
+span,
+li {
     font-family: "lato", sans-serif;
     background: -webkit-linear-gradient(white, #38495a);
     -webkit-background-clip: text;
