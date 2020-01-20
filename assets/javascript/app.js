@@ -7,6 +7,10 @@ var rps1Array = ["rock", "paper", "scissors"];
 var rps2Array = ["rock2", "paper2", "scissors2"];
 var refString1;
 var refString2;
+var win1 = 0;
+var win2 = 0;
+var lose1 = 0;
+var lose2 = 0;
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -23,6 +27,10 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
+$("#win1").text(win1);
+$("#loss1").text(lose1);
+$("#win2").text(win2);
+$("#loss2").text(lose2);
 
 function setUpRoom() {
     roomCode = $("#roomCode").val().trim();
@@ -98,6 +106,86 @@ function selectChoice(oneNot2, buttonID) {
     }
 }
 
+function displayWinner(winner) {
+    if (winner == "Player1") {
+        win1++;
+        lose2++;
+        $("#win1").empty().text(win1);
+        $("#loss2").empty().text(lose2);
+        $("#rock").removeClass("active");
+        $("#scissors").removeClass("active");
+        $("#paper").removeClass("active");
+        $("#rock2").removeClass("active");
+        $("#scissors2").removeClass("active");
+        $("#paper2").removeClass("active");
+    } else if (winner == "Player2") {
+        lose1++;
+        win2++;
+        $("#loss1").empty().text(lose1);
+        $("#win2").empty().text(win2);
+        $("#rock").removeClass("active");
+        $("#scissors").removeClass("active");
+        $("#paper").removeClass("active");
+        $("#rock2").removeClass("active");
+        $("#scissors2").removeClass("active");
+        $("#paper2").removeClass("active");
+    }
+
+}
+/*
+1   2   winner:
+r   r   tie
+r   p   2
+r   s   1
+p   r   1
+p   p   tie
+p   s   2
+s   r   2
+s   p   1
+s   s   tie
+*/
+function checkWinner(rps1, rps2) {
+    var rps2string = rps2.split("2")[0];
+    var winner;
+    console.log(rps2string);
+    if (rps1 == rps2string) {
+        alert("Tie!");
+        winner = "none";
+    } else if (rps1 == "rock" && rps2string == "scissors") {
+        winner = "Player1";
+    } else if (rps1 == "rock" && rps2string == "paper") {
+        winner = "Player2";
+    } else if (rps1 == "paper" && rps2string == "scissors") {
+        winner = "Player2";
+    } else if (rps1 == "paper" && rps2string == "rock") {
+        winner = "Player1";
+    } else if (rps1 == "scissors" && rps2string == "paper") {
+        winner = "Player1";
+    } else if (rps1 == "scissors" && rps2string == "rock") {
+        winner = "Player2";
+    }
+    displayWinner(winner);
+    // database.ref(roomCode + '/Player1').update({
+    //     choice: "empty"
+    // });
+    // database.ref(roomCode + '/Player2').update({
+    //     choice: "empty"
+    // });
+}
+
+function compareChoices() {
+    var winner = null;
+    if (roomCode != "" && (player1 != null || player2 != null)) {
+        database.ref(roomCode).once("value", function(snapshot) {
+            console.log("compareChoice", snapshot.val());
+            if (snapshot.child("Player1").exists() && snapshot.child("Player2").exists()) {
+                // alert("compare!!!!");
+                checkWinner(snapshot.val().Player1.choice, snapshot.val().Player2.choice);
+            }
+        })
+    }
+}
+
 
 $("#roomCodeBtn").on("click", function(event) {
     event.preventDefault();
@@ -113,6 +201,8 @@ $(".choice").on("click", function() {
                 choice: choice
             });
             selectChoice(player1, "#" + choice);
+            compareChoices();
+            displayWinner();
         } else {
             console.log("Cannot choose for player 2");
         }
@@ -123,6 +213,8 @@ $(".choice").on("click", function() {
                 choice: choice
             });
             selectChoice(false, "#" + choice);
+            compareChoices();
+            displayWinner();
         } else {
             console.log("Cannot choose for player 1");
         }
