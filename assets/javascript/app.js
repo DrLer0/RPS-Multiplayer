@@ -198,6 +198,22 @@ $("#roomCodeBtn").on("click", function(event) {
     event.preventDefault();
     setUpRoom();
 })
+$("#sendBtn").on("click", function(event) {
+    event.preventDefault();
+    var chat = $("#chatBox").val().trim();
+    console.log("--->", chat);
+    if (chat == "") {
+
+    } else if (player1 != null) {
+        database.ref(roomCode + '/Player1').update({
+            chat: chat
+        })
+    } else if (player2 != null) {
+        database.ref(roomCode + '/Player2').update({
+            chat: chat
+        })
+    }
+})
 
 $(".choice").on("click", function() {
     var choice = $(this).attr("id");
@@ -236,4 +252,21 @@ database.ref(roomCode).on("child_changed", function(snapshot) {
             displayWinner(winner);
         }
     }
+})
+
+database.ref(roomCode).on("child_changed", function(snapshot) {
+    if (snapshot.child("Player1").exists()) {
+        chat = snapshot.val().Player1.chat;
+        $("#chat1").empty().text(chat);
+        console.log("chat1exists");
+    }
+    console.log("chat1", snapshot.val());
+})
+database.ref(roomCode).on("child_changed", function(snapshot) {
+    if (snapshot.child("Player2").exists()) {
+        chat = snapshot.val().Player2.chat;
+        $("#chat2").empty().text(chat);
+        console.log("chat2exists");
+    }
+    console.log("chat2", snapshot.val());
 })
