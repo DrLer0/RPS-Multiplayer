@@ -6,4 +6,4 @@
   4. Chat with your opponent using the chat box!
   
  # Technologies Used:
- Node.js, npm, express, handlebars, mongoose, morgan, cheerio, axios, MongoDB
+HTML, CSS, Javascript, Google Firebase, jQuery, Bootstrap
